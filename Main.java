@@ -3,7 +3,6 @@
 // Henrique Panisson Agostineto RA 1136301
 // Matheus Rodrigues Souza RA 1136389
 
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
