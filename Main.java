@@ -1,4 +1,9 @@
-import java.time.LocalDate;
+// Ricardo Rigo Antunes RA 1136661
+// Pedro Henrique Piovezan RA 1135911
+// Henrique Panisson Agostineto RA 1136301
+// Matheus Rodrigues Souza RA 1136389
+
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -16,19 +21,20 @@ public class Main {
             try {
                 valor = Integer.parseInt(valorStr);  
                 entradaValida = true;
-            } catch (Exception e) {
-                System.out.println("Erro. Por favor informe um número Inteiro");
+            } catch (NumberFormatException e) {
+                System.out.println("Erro. Por favor, informe um número inteiro válido.");
             }
         } while (!entradaValida);
         return valor;
     }
-            
-     private static void limparTela() {
+
+    private static void limparTela() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-     private static void listar() {
+    private static void listar() {
+        limparTela(); 
         var livros = biblio.pesquisarTodos();
         livros.sort(Comparator.comparing(Livro::getTitulo));   
 
@@ -40,10 +46,13 @@ public class Main {
             System.out.println("N. Páginas: " + livro.getnPaginas());
         }
 
-        input.nextLine();
+        System.out.println("Pressione ENTER para continuar...");
+        input.nextLine(); 
+        limparTela();  
     }
 
-     private static void adicionar() {
+    private static void adicionar() {
+        limparTela();  
         Livro novoLivro = new Livro();
         System.out.println("======== ADICIONANDO NOVO LIVRO ========");
         System.out.print("Informe o título do livro: ");
@@ -54,27 +63,26 @@ public class Main {
         String autor = input.nextLine();
         novoLivro.setAutor(autor);
 
-        System.out.print("Informe o ano de publicação: ");
-        int ano = input.nextInt();
+        int ano = inputNumerico("Informe o ano de publicação: ");
         novoLivro.setAnoPublicacao(ano);
-        input.nextLine(); 
 
-        System.out.print("Informe o número de páginas: ");
-        int nPaginas = input.nextInt();
+        int nPaginas = inputNumerico("Informe o número de páginas: ");
         novoLivro.setnPaginas(nPaginas);
-        input.nextLine();  
 
         try {
             biblio.adicionar(novoLivro);
-            System.out.println("Livro adicionado com Sucesso!");
+            System.out.println("Livro adicionado com sucesso!");
         } catch (Exception e) {
-             System.out.println("ERRO: " + e.getMessage());
+            System.out.println("ERRO: " + e.getMessage());
         }
 
+        System.out.println("Pressione ENTER para continuar...");
         input.nextLine();   
+        limparTela();   
     }
 
-     private static void pesquisar() {
+    private static void pesquisar() {
+        limparTela();   
         System.out.print("Informe o título do livro que você deseja pesquisar: ");
         String titulo = input.nextLine();
         List<Livro> livrosEncontrados = biblio.pesquisarPorTitulo(titulo);
@@ -91,20 +99,29 @@ public class Main {
                 System.out.println("-----------------------------");
             }
         }
+
+        System.out.println("Pressione ENTER para continuar...");
+        input.nextLine();  
+        limparTela();  
     }
 
     private static void remover() {
-        System.out.print("Informe o Titulo do Livro que você deseja remover: ");
+        limparTela();  
+        System.out.print("Informe o título do livro que você deseja remover: ");
         String titulo = input.nextLine();
         try {
             biblio.removerPorTitulo(titulo);
-            System.out.println("Esse Livro Foi Removido!");
+            System.out.println("Esse livro foi removido!");
         } catch (Exception e) {
-            System.out.println("Erro ao Remover Esse Livro: " + e.getMessage());
+            System.out.println("Erro ao remover esse livro: " + e.getMessage());
         }
+
+        System.out.println("Pressione ENTER para continuar...");
+        input.nextLine();  
+        limparTela();  
     }
 
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         String menu = """
                 SISTEMA DE GERENCIAMENTO DE BIBLIOTECA
                 Escolha uma das opções:
@@ -135,8 +152,10 @@ public class Main {
                     remover();
                     break;
                 default:
-                    System.out.println("Opção Inválida!!!");
+                    System.out.println("Opção inválida!!!");
+                    System.out.println("Pressione ENTER para continuar...");
                     input.nextLine();
+                    limparTela();  
                     break;
             }
         } while (opcao != 0);
